@@ -12,9 +12,9 @@
     
     <title>Dobrý Predaj - Rýchly výkup nehnuteľností do 3 dní</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Performance Optimization -->
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     
     <style>
         :root {
@@ -26,7 +26,7 @@
             --color-dark: #0f0f23;
             --color-gray: #6B7280;
             --color-light: #F8F9FA;
-            --font-family: 'Plus Jakarta Sans', sans-serif;
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
         }
         
         * {
@@ -37,6 +37,9 @@
         
         html {
             scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
         
         /* Scroll margin for fixed navbar */
@@ -50,6 +53,71 @@
             background: var(--color-white);
             overflow-x: hidden;
             line-height: 1.6;
+        }
+
+        /* Performance Optimizations */
+        section {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 600px;
+        }
+
+        .hero {
+            content-visibility: visible;
+        }
+
+        /* Prevent layout shifts */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        iframe,
+        video {
+            aspect-ratio: 16 / 9;
+            width: 100%;
+            height: auto;
+        }
+
+        .btn,
+        .problem-card,
+        .journey-card,
+        .contact-card,
+        .nav-link,
+        .hamburger {
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        .floating-card,
+        .stat-card,
+        .pillar-card,
+        .guarantee-card,
+        .contact-method {
+            contain: layout style paint;
+        }
+
+        /* GPU Acceleration for animations */
+        @media (prefers-reduced-motion: no-preference) {
+            .journey-icon,
+            .problem-icon,
+            .contact-icon,
+            .info-icon {
+                transform: translateZ(0);
+                will-change: transform;
+            }
+        }
+
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
         
         /* Animated Background */
@@ -2553,18 +2621,43 @@
             });
         });
 
-        // Navbar scroll effect
+        // Navbar scroll effect with passive listener
+        let ticking = false;
+        let lastScrollTop = 0;
+        const stickyCta = document.getElementById('stickyCta');
+        const hero = document.querySelector('.hero');
+        
         window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const navbar = document.getElementById('navbar');
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    // Navbar effect
+                    if (scrollTop > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                    
+                    // Sticky CTA effect
+                    if (hero) {
+                        const heroBottom = hero.offsetHeight;
+                        if (scrollTop > heroBottom && scrollTop > lastScrollTop) {
+                            stickyCta.classList.add('visible');
+                        } else if (scrollTop < heroBottom) {
+                            stickyCta.classList.remove('visible');
+                        }
+                        lastScrollTop = scrollTop;
+                    }
+                    
+                    // Update active menu item
+                    updateActiveMenuItem();
+                    ticking = false;
+                });
+                ticking = true;
             }
-            
-            // Update active menu item based on scroll position
-            updateActiveMenuItem();
-        });
+        }, { passive: true });
 
         // Update active menu item
         function updateActiveMenuItem() {
@@ -2601,12 +2694,16 @@
             }
         });
 
-        // Close menu on window resize to desktop size
+        // Close menu on window resize to desktop size (debounced)
+        let resizeTimer;
         window.addEventListener('resize', () => {
-            if (window.innerWidth > 1024) {
-                closeMobileMenu();
-            }
-        });
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth > 1024) {
+                    closeMobileMenu();
+                }
+            }, 150);
+        }, { passive: true });
 
         // Calculator Logic
         let currentStep = 1;
@@ -2747,24 +2844,6 @@
             }
         }
 
-        // Sticky CTA
-        let lastScrollTop = 0;
-        const stickyCta = document.getElementById('stickyCta');
-        const hero = document.querySelector('.hero');
-
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const heroBottom = hero.offsetHeight;
-
-            if (scrollTop > heroBottom && scrollTop > lastScrollTop) {
-                stickyCta.classList.add('visible');
-            } else if (scrollTop < heroBottom) {
-                stickyCta.classList.remove('visible');
-            }
-
-            lastScrollTop = scrollTop;
-        });
-
         // Phone formatting
         document.getElementById('phone').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
@@ -2858,20 +2937,27 @@
         const journeyCards = document.querySelectorAll('.journey-card');
 
         if (journeyWrapper && progressDots.length > 0) {
-            // Update active dot based on scroll position
+            // Update active dot based on scroll position with throttling
+            let scrollTicking = false;
             journeyWrapper.addEventListener('scroll', () => {
-                const scrollLeft = journeyWrapper.scrollLeft;
-                const cardWidth = journeyCards[0].offsetWidth + 32; // card width + gap
-                const activeIndex = Math.round(scrollLeft / cardWidth);
-                
-                progressDots.forEach((dot, index) => {
-                    if (index === activeIndex) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
-                    }
-                });
-            });
+                if (!scrollTicking) {
+                    window.requestAnimationFrame(() => {
+                        const scrollLeft = journeyWrapper.scrollLeft;
+                        const cardWidth = journeyCards[0].offsetWidth + 32; // card width + gap
+                        const activeIndex = Math.round(scrollLeft / cardWidth);
+                        
+                        progressDots.forEach((dot, index) => {
+                            if (index === activeIndex) {
+                                dot.classList.add('active');
+                            } else {
+                                dot.classList.remove('active');
+                            }
+                        });
+                        scrollTicking = false;
+                    });
+                    scrollTicking = true;
+                }
+            }, { passive: true });
 
             // Click on dots to scroll to card
             progressDots.forEach((dot, index) => {

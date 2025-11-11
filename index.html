@@ -39,6 +39,11 @@
             scroll-behavior: smooth;
         }
         
+        /* Scroll margin for fixed navbar */
+        section {
+            scroll-margin-top: 100px;
+        }
+        
         body {
             font-family: var(--font-family);
             color: var(--color-dark);
@@ -66,6 +71,178 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            gap: 32px;
+        }
+
+        .logo {
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--color-dark);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--color-dark);
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .nav-link.active {
+            background: rgba(102, 126, 234, 0.15);
+            color: #667eea;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 16px;
+            right: 16px;
+            height: 2px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-small {
+            padding: 12px 24px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 3px;
+            background: var(--color-dark);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        /* Mobile Menu */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 300px;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                padding: 100px 40px 40px;
+                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+                transition: right 0.4s ease;
+                gap: 0;
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            .nav-link {
+                padding: 16px 0;
+                width: 100%;
+                font-size: 18px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .nav-cta {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-wrapper {
+                padding: 16px 0;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
         }
         
         /* Typography */
@@ -254,6 +431,266 @@
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
         }
         
+        
+        /* About Section - Interactive Journey */
+        .about-section {
+            padding: 120px 0;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-intro {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 80px;
+        }
+
+        .about-intro h2 {
+            font-size: clamp(36px, 5vw, 56px);
+            margin-bottom: 20px;
+        }
+
+        .about-lead {
+            font-size: 20px;
+            color: var(--color-gray);
+            line-height: 1.7;
+        }
+
+        /* Journey Cards - Horizontal Scroll */
+        .journey-cards-wrapper {
+            display: flex;
+            gap: 32px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            padding: 40px 24px 60px;
+            margin: 0 -24px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .journey-cards-wrapper::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .journey-cards-wrapper::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .journey-cards-wrapper::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 10px;
+        }
+
+        .journey-card {
+            min-width: 400px;
+            max-width: 400px;
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            scroll-snap-align: center;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .journey-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+        }
+
+        .journey-card[data-step="1"] {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        }
+
+        .journey-card[data-step="2"] {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.05) 0%, rgba(0, 242, 254, 0.05) 100%);
+        }
+
+        .journey-card[data-step="3"] {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.05) 0%, rgba(245, 87, 108, 0.05) 100%);
+        }
+
+        .journey-card[data-step="4"] {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.05) 0%, rgba(251, 146, 60, 0.05) 100%);
+        }
+
+        .journey-card[data-step="5"] {
+            background: linear-gradient(135deg, rgba(67, 233, 123, 0.05) 0%, rgba(56, 249, 215, 0.05) 100%);
+        }
+
+        .journey-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 28px;
+        }
+
+        .journey-icon {
+            font-size: 48px;
+            width: 72px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.4s ease;
+        }
+
+        .journey-card:hover .journey-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .journey-number {
+            font-size: 64px;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.15;
+            line-height: 1;
+        }
+
+        .journey-card-content h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--color-dark);
+        }
+
+        .journey-card-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #667eea;
+            margin-bottom: 16px;
+        }
+
+        .journey-card-content p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--color-gray);
+        }
+
+        /* Progress Indicator */
+        .journey-progress {
+            position: relative;
+            margin: 40px auto 80px;
+            max-width: 400px;
+        }
+
+        .progress-line {
+            height: 3px;
+            background: #E5E7EB;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-dots {
+            display: flex;
+            justify-content: space-between;
+            margin-top: -8px;
+            position: relative;
+        }
+
+        .progress-dot {
+            width: 16px;
+            height: 16px;
+            background: #E5E7EB;
+            border: 3px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-dot:hover {
+            transform: scale(1.3);
+        }
+
+        .progress-dot.active {
+            background: var(--gradient-primary);
+            transform: scale(1.2);
+        }
+
+        /* Stats Bar */
+        .about-stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            padding: 48px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-item-inline {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 48px;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .about-section {
+                padding: 80px 0;
+            }
+
+            .journey-card {
+                min-width: 320px;
+                max-width: 320px;
+                padding: 32px 28px;
+            }
+
+            .journey-icon {
+                width: 56px;
+                height: 56px;
+                font-size: 32px;
+            }
+
+            .journey-number {
+                font-size: 48px;
+            }
+
+            .journey-card-content h3 {
+                font-size: 20px;
+            }
+
+            .about-stats-bar {
+                gap: 40px;
+                padding: 36px 24px;
+            }
+
+            .stat-num {
+                font-size: 40px;
+            }
+        }
+
         /* Problem Section */
         .problem-section {
             padding: 120px 0;
@@ -274,8 +711,28 @@
         
         .problem-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .problem-card:last-child {
+            grid-column: 1 / -1;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .problem-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .problem-card:last-child {
+                grid-column: 1;
+                max-width: 100%;
+            }
         }
         
         .problem-card {
@@ -825,66 +1282,339 @@
             line-height: 1.7;
         }
         
-        /* Final CTA */
+        /* Final CTA / Split Hero Contact Section */
         .final-cta {
-            padding: 120px 0;
-            background: var(--gradient-primary);
-            color: var(--color-white);
-            text-align: center;
+            padding: 0;
+            background: white;
+            position: relative;
+        }
+
+        .split-hero-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 700px;
+        }
+
+        /* Left Side - Dark Gradient */
+        .split-hero-left {
+            background: var(--gradient-dark);
+            color: white;
+            padding: 80px 60px;
+            display: flex;
+            align-items: center;
             position: relative;
             overflow: hidden;
         }
-        
-        .final-cta::before {
+
+        .split-hero-left::before {
             content: '';
             position: absolute;
             top: -50%;
-            right: -20%;
+            right: -30%;
             width: 600px;
             height: 600px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(102, 126, 234, 0.2);
             border-radius: 50%;
             filter: blur(100px);
         }
-        
-        .final-cta-content {
+
+        .hero-left-content {
             position: relative;
             z-index: 1;
+            max-width: 500px;
         }
-        
-        .final-cta h2 {
-            color: var(--color-white);
+
+        .split-hero-left h2 {
+            font-size: clamp(32px, 4vw, 48px);
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: white;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            line-height: 1.7;
+            opacity: 0.9;
+            margin-bottom: 48px;
+        }
+
+        .contact-info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .contact-info-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-info-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(8px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .info-icon {
+            font-size: 32px;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .info-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            font-size: 13px;
+            opacity: 0.7;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .trust-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .badge-icon {
+            font-size: 16px;
+        }
+
+        /* Right Side - Form */
+        .split-hero-right {
+            background: var(--color-light);
+            padding: 80px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-form-card {
+            background: white;
+            padding: 48px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .form-header h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--color-dark);
+        }
+
+        .form-header p {
+            font-size: 15px;
+            color: var(--color-gray);
+        }
+
+        .contact-form {
+            margin-bottom: 32px;
+        }
+
+        .contact-form .form-group {
             margin-bottom: 20px;
         }
-        
-        .final-cta-subtitle {
-            font-size: 20px;
-            margin-bottom: 40px;
-            opacity: 0.95;
+
+        .contact-form label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-dark);
+            margin-bottom: 8px;
         }
-        
-        .btn-white {
-            background: var(--color-white);
+
+        .contact-form .form-input,
+        .contact-form .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: var(--font-family);
+            transition: all 0.3s ease;
+        }
+
+        .contact-form .form-input:focus,
+        .contact-form .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .contact-form .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .contact-form .form-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .contact-form .form-checkbox input {
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .contact-form .form-checkbox label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-gray);
+            margin: 0;
+        }
+
+        .form-note {
+            text-align: center;
+            font-size: 13px;
+            color: var(--color-gray);
+            margin-top: 16px;
+        }
+
+        .form-divider {
+            position: relative;
+            text-align: center;
+            margin: 32px 0;
+        }
+
+        .form-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #E5E7EB;
+        }
+
+        .form-divider span {
+            position: relative;
+            background: white;
+            padding: 0 16px;
+            font-size: 13px;
+            color: var(--color-gray);
+            font-weight: 600;
+        }
+
+        .btn-secondary-action {
+            width: 100%;
+            padding: 14px 24px;
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-family);
+        }
+
+        .btn-secondary-action:hover {
+            border-color: #667eea;
             color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
         }
-        
-        .btn-white:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 60px rgba(255, 255, 255, 0.3);
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .split-hero-container {
+                grid-template-columns: 1fr;
+            }
+
+            .split-hero-left,
+            .split-hero-right {
+                padding: 60px 40px;
+            }
+
+            .hero-form-card {
+                padding: 40px 32px;
+            }
         }
-        
-        .alternative-contact {
-            margin-top: 32px;
-            font-size: 18px;
+
+        @media (max-width: 768px) {
+            .split-hero-left,
+            .split-hero-right {
+                padding: 60px 24px;
+            }
+
+            .split-hero-left h2 {
+                font-size: 32px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .contact-info-item {
+                padding: 16px;
+            }
+
+            .info-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 28px;
+            }
+
+            .info-value {
+                font-size: 16px;
+            }
+
+            .hero-form-card {
+                padding: 32px 24px;
+            }
+
+            .form-header h3 {
+                font-size: 24px;
+            }
         }
-        
-        .phone-link {
-            color: var(--color-white);
-            font-weight: 700;
-            text-decoration: none;
-            border-bottom: 2px solid var(--color-white);
-        }
-        
+
         /* Footer */
         footer {
             background: var(--color-dark);
@@ -1005,8 +1735,40 @@
 <body>
     <div class="animated-bg"></div>
 
+    <!-- Navigation Menu -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="#home" class="logo">
+                    <span class="logo-text">Dobrý<span class="gradient-text">Predaj</span></span>
+                </a>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home" class="nav-link">Domov</a></li>
+                    <li><a href="#o-nas" class="nav-link">O nás</a></li>
+                    <li><a href="#vyhody" class="nav-link">Výhody</a></li>
+                    <li><a href="#proces" class="nav-link">Proces</a></li>
+                    <li><a href="#faq" class="nav-link">FAQ</a></li>
+                    <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
+                </ul>
+
+                <div class="nav-cta">
+                    <a href="#kalkulator" class="btn btn-primary btn-small">
+                        Oceniť nehnuteľnosť
+                    </a>
+                </div>
+
+                <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
                 <div class="hero-badge">
@@ -1043,8 +1805,113 @@
         </div>
     </section>
 
+    <!-- About Us Section -->
+    <section class="about-section" id="o-nas">
+        <div class="container">
+            <div class="about-intro">
+                <h2>Poznajte <span class="gradient-text">náš príbeh</span></h2>
+                <p class="about-lead">Od roku 2014 pomáhame klientom rýchlo a férovo predať nehnuteľnosti</p>
+            </div>
+
+            <!-- Interactive Journey Cards -->
+            <div class="journey-cards-wrapper">
+                <div class="journey-card" data-step="1">
+                    <div class="journey-card-header">
+                        <div class="journey-icon">🎯</div>
+                        <div class="journey-number">01</div>
+                    </div>
+                    <div class="journey-card-content">
+                        <h3>Naša filozofia</h3>
+                        <h4>Kto sme a čo robíme</h4>
+                        <p>Pomáhame klientom rýchlo predať nehnuteľnosti s minimálnym stresom. S viac ako 10 rokov skúseností na trhu sme získali dôveru mnohých klientov. Naša investičná skupina zabezpečuje rýchly a efektívny výkup nehnuteľností a ponúka jedinečné riešenia pre rôzne situácie, s ktorými sa naši klienti stretávajú.</p>
+                    </div>
+                </div>
+
+                <div class="journey-card" data-step="2">
+                    <div class="journey-card-header">
+                        <div class="journey-icon">🚀</div>
+                        <div class="journey-number">02</div>
+                    </div>
+                    <div class="journey-card-content">
+                        <h3>Misia</h3>
+                        <h4>Naša misia a hodnoty</h4>
+                        <p>Našou misiou je poskytovať klientom rýchle a diskrétne riešenia v oblasti predaja nehnuteľností. Snažíme sa eliminovať stresové situácie a zabezpečiť, aby bol proces hladký a bezproblémový pre každého, kto sa na nás obráti.</p>
+                    </div>
+                </div>
+
+                <div class="journey-card" data-step="3">
+                    <div class="journey-card-header">
+                        <div class="journey-icon">💎</div>
+                        <div class="journey-number">03</div>
+                    </div>
+                    <div class="journey-card-content">
+                        <h3>Naša hodnota</h3>
+                        <h4>Naša vízia do budúcnosti</h4>
+                        <p>Chceme byť vedúcou investičnou skupinou v oblasti výkupu nehnuteľností na Slovensku, známe svojou transparentnosťou a kvalitou služieb. Našim cieľom je neustále zlepšovať naše procesy a prispievať k lepšiemu životu našich klientov.</p>
+                    </div>
+                </div>
+
+                <div class="journey-card" data-step="4">
+                    <div class="journey-card-header">
+                        <div class="journey-icon">🏆</div>
+                        <div class="journey-number">04</div>
+                    </div>
+                    <div class="journey-card-content">
+                        <h3>Naše úspechy</h3>
+                        <h4>Skúsenosti a dosiahnuté výsledky</h4>
+                        <p>Naša investičná skupina sa môže pochváliť úspešným výkupom desiatkami nehnuteľností a spokojnosť našich klientov je pre nás prioritou. So širokým spektrom služieb sme schopní rýchlo reagovať na potreby našich zákazníkov a zabezpečiť im najlepšie riešenia.</p>
+                    </div>
+                </div>
+
+                <div class="journey-card" data-step="5">
+                    <div class="journey-card-header">
+                        <div class="journey-icon">🌟</div>
+                        <div class="journey-number">05</div>
+                    </div>
+                    <div class="journey-card-content">
+                        <h3>Naša cesta</h3>
+                        <h4>Kde sme dnes</h4>
+                        <p>Od nášho vzniku sme prešli významnými krokmi v oblasti výkupu nehnuteľností. Naša skupina sa rozrastá a neustále sa prispôsobujeme potrebám trhu, s cieľom poskytovať našim klientom uspokojivé a efektívne riešenia.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Indicator -->
+            <div class="journey-progress">
+                <div class="progress-line"></div>
+                <div class="progress-dots">
+                    <span class="progress-dot active" data-target="1"></span>
+                    <span class="progress-dot" data-target="2"></span>
+                    <span class="progress-dot" data-target="3"></span>
+                    <span class="progress-dot" data-target="4"></span>
+                    <span class="progress-dot" data-target="5"></span>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="about-stats-bar">
+                <div class="stat-item-inline">
+                    <div class="stat-num">10+</div>
+                    <div class="stat-text">rokov skúseností</div>
+                </div>
+                <div class="stat-item-inline">
+                    <div class="stat-num">500+</div>
+                    <div class="stat-text">spokojných klientov</div>
+                </div>
+                <div class="stat-item-inline">
+                    <div class="stat-num">24h</div>
+                    <div class="stat-text">prvá odpoveď</div>
+                </div>
+                <div class="stat-item-inline">
+                    <div class="stat-num">3 dni</div>
+                    <div class="stat-text">peniaze na účte</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Problem Section -->
-    <section class="problem-section">
+    <section class="problem-section" id="vyhody">
         <div class="container">
             <div class="section-header">
                 <h2>Kedy vám vieme <span class="gradient-text">pomôcť?</span></h2>
@@ -1082,12 +1949,6 @@
                     <div class="problem-icon">📄</div>
                     <h3 class="problem-title">Zadlžená nehnuteľnosť</h3>
                     <p class="problem-text">Riešime hypotéky, záložné práva a ďalšie zaťaženia</p>
-                </div>
-                
-                <div class="problem-card floating-card">
-                    <div class="problem-icon">🔐</div>
-                    <h3 class="problem-title">Predaj so spätným prenájmom</h3>
-                    <p class="problem-text">Predajte a zostaňte bývať vo vlastnom byte</p>
                 </div>
             </div>
         </div>
@@ -1255,7 +2116,7 @@
     </section>
 
     <!-- Trust Section -->
-    <section class="trust-section">
+    <section class="trust-section" id="proces">
         <div class="container">
             <div class="section-header">
                 <h2>Ako to <span class="gradient-text">funguje?</span></h2>
@@ -1322,26 +2183,8 @@
         </div>
     </section>
 
-    <!-- Special Offer -->
-    <section class="special-offer">
-        <div class="container">
-            <div class="offer-content">
-                <h2>Predajte a zostaňte bývať</h2>
-                <p class="offer-text">
-                    Potrebujete peniaze, ale nechcete sa sťahovať? Ponúkame možnosť spätného prenájmu. 
-                    Vyriešite finančnú situáciu a zároveň si zachovajte svoj domov. Po predaji vám môžeme 
-                    ponúknuť nájomný vzťah za férové podmienky.
-                </p>
-                <button class="btn btn-white btn-large" onclick="scrollToCalculator()">
-                    Chcem vedieť viac
-                    <span>→</span>
-                </button>
-            </div>
-        </div>
-    </section>
-
     <!-- FAQ Section -->
-    <section class="faq-section">
+    <section class="faq-section" id="faq">
         <div class="container">
             <div class="section-header">
                 <h2>Časté <span class="gradient-text">otázky</span></h2>
@@ -1423,20 +2266,138 @@
     </section>
 
     <!-- Final CTA -->
-    <section class="final-cta">
-        <div class="container">
-            <div class="final-cta-content">
-                <h2>Vyriešte svoje starosti ešte dnes</h2>
-                <p class="final-cta-subtitle">
-                    Stačí minúta a máte nezáväzné ocenenie. Ozveme sa vám do 24 hodín.
-                </p>
-                <button class="btn btn-white btn-large" onclick="scrollToCalculator()">
-                    Chcem nezáväznú ponuku
-                    <span>→</span>
-                </button>
-                <p class="alternative-contact">
-                    Alebo zavolajte: <a href="tel:+421123456789" class="phone-link">+421 123 456 789</a>
-                </p>
+    <section class="final-cta" id="kontakt">
+        <div class="split-hero-container">
+            <!-- Left Side - Dark Gradient -->
+            <div class="split-hero-left">
+                <div class="hero-left-content">
+                    <h2>Potrebujete pomoc?<br>Sme tu pre vás</h2>
+                    <p class="hero-subtitle">
+                        Odpovieme do 24 hodín a nájdeme riešenie vašej situácie. 
+                        Diskrétne, rýchlo a profesionálne.
+                    </p>
+
+                    <div class="contact-info-list">
+                        <a href="tel:+421123456789" class="contact-info-item">
+                            <div class="info-icon">📞</div>
+                            <div class="info-text">
+                                <span class="info-label">Zavolajte</span>
+                                <span class="info-value">+421 123 456 789</span>
+                            </div>
+                        </a>
+
+                        <a href="mailto:info@dobrypredaj.sk" class="contact-info-item">
+                            <div class="info-icon">📧</div>
+                            <div class="info-text">
+                                <span class="info-label">Napíšte email</span>
+                                <span class="info-value">info@dobrypredaj.sk</span>
+                            </div>
+                        </a>
+
+                        <div class="contact-info-item">
+                            <div class="info-icon">⏰</div>
+                            <div class="info-text">
+                                <span class="info-label">Pracovný čas</span>
+                                <span class="info-value">Po-Pia 8:00-18:00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trust-badges">
+                        <div class="trust-badge">
+                            <span class="badge-icon">✓</span>
+                            <span>Odpoveď do 24h</span>
+                        </div>
+                        <div class="trust-badge">
+                            <span class="badge-icon">✓</span>
+                            <span>100% diskrétnosť</span>
+                        </div>
+                        <div class="trust-badge">
+                            <span class="badge-icon">✓</span>
+                            <span>Bez záväzkov</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Form -->
+            <div class="split-hero-right">
+                <div class="hero-form-card">
+                    <div class="form-header">
+                        <h3>Rýchly kontakt</h3>
+                        <p>Vyplňte formulár a ozveme sa vám do 24 hodín</p>
+                    </div>
+
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <label for="contact-name">Vaše meno *</label>
+                            <input 
+                                type="text" 
+                                id="contact-name" 
+                                class="form-input" 
+                                placeholder="Ján Novák"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-phone">Telefónne číslo *</label>
+                            <input 
+                                type="tel" 
+                                id="contact-phone" 
+                                class="form-input" 
+                                placeholder="+421 9XX XXX XXX"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-email">Email (nepovinné)</label>
+                            <input 
+                                type="email" 
+                                id="contact-email" 
+                                class="form-input" 
+                                placeholder="vas@email.sk"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-message">Vaša správa *</label>
+                            <textarea 
+                                id="contact-message" 
+                                class="form-textarea" 
+                                rows="4"
+                                placeholder="Popíšte stručne vašu situáciu..."
+                                required
+                            ></textarea>
+                        </div>
+
+                        <div class="form-checkbox">
+                            <input type="checkbox" id="contact-gdpr" required>
+                            <label for="contact-gdpr">
+                                Súhlasím so spracovaním osobných údajov podľa 
+                                <a href="#" style="color: #667eea;">GDPR</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            Odoslať správu
+                            <span>→</span>
+                        </button>
+
+                        <p class="form-note">
+                            🔒 Vaše údaje sú v bezpečí a zostanú dôverné
+                        </p>
+                    </form>
+
+                    <div class="form-divider">
+                        <span>alebo</span>
+                    </div>
+
+                    <button class="btn-secondary-action" onclick="scrollToCalculator()">
+                        Vyplniť kalkulátor ceny
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -1455,7 +2416,7 @@
                     <h4>Kontakt</h4>
                     <p>
                         📞 <a href="tel:+421123456789">+421 123 456 789</a><br>
-                        📧 <a href="mailto:info@dobrypredaj.sk">info@dobrypredaj.sk</a><br>
+                        📧 <a href="/cdn-cgi/l/email-protection#731a1d151c33171c11010a0301161712195d0018"><span class="__cf_email__" data-cfemail="21484f474e61454e43535851534445404b0f524a">[email&#160;protected]</span></a><br>
                         🏢 Hlavná 123, Bratislava
                     </p>
                 </div>
@@ -1483,7 +2444,85 @@
         </button>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const hamburger = document.getElementById('hamburger');
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Smooth scroll with offset for fixed navbar
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Close mobile menu
+                const navMenu = document.getElementById('navMenu');
+                const hamburger = document.getElementById('hamburger');
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+                
+                // Get target section
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    // Calculate offset for fixed navbar (navbar height + some padding)
+                    const navbarHeight = document.getElementById('navbar').offsetHeight;
+                    const targetPosition = targetSection.offsetTop - navbarHeight - 20;
+                    
+                    // Smooth scroll to target
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            // Update active menu item based on scroll position
+            updateActiveMenuItem();
+        });
+
+        // Update active menu item
+        function updateActiveMenuItem() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const navbarHeight = document.getElementById('navbar').offsetHeight;
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - navbarHeight - 100;
+                const sectionHeight = section.offsetHeight;
+                
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Initial check on page load
+        updateActiveMenuItem();
+
         // Calculator Logic
         let currentStep = 1;
         const formData = {
@@ -1495,10 +2534,16 @@
         };
 
         function scrollToCalculator() {
-            document.getElementById('kalkulator').scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'center'
-            });
+            const calculator = document.getElementById('kalkulator');
+            if (calculator) {
+                const navbarHeight = document.getElementById('navbar').offsetHeight;
+                const targetPosition = calculator.offsetTop - navbarHeight - 20;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
         }
 
         function selectOption(field, value, element) {
@@ -1661,6 +2706,99 @@
                 e.target.value = '+' + value;
             }
         });
+
+        // Contact form phone formatting
+        const contactPhoneInput = document.getElementById('contact-phone');
+        if (contactPhoneInput) {
+            contactPhoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                if (value.length > 0 && !value.startsWith('421')) {
+                    if (value.startsWith('0')) {
+                        value = '421' + value.substring(1);
+                    } else if (value.startsWith('9')) {
+                        value = '421' + value;
+                    }
+                }
+                
+                if (value.length > 12) {
+                    value = value.substring(0, 12);
+                }
+                
+                if (value.length >= 3) {
+                    let formatted = '+' + value.substring(0, 3);
+                    if (value.length > 3) formatted += ' ' + value.substring(3, 6);
+                    if (value.length > 6) formatted += ' ' + value.substring(6, 9);
+                    if (value.length > 9) formatted += ' ' + value.substring(9);
+                    e.target.value = formatted;
+                } else if (value.length > 0) {
+                    e.target.value = '+' + value;
+                }
+            });
+        }
+
+        // Contact form submission
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('contact-name').value;
+                const phone = document.getElementById('contact-phone').value;
+                const email = document.getElementById('contact-email').value;
+                const message = document.getElementById('contact-message').value;
+                const gdpr = document.getElementById('contact-gdpr').checked;
+
+                if (!name || !phone || !message) {
+                    alert('Prosím, vyplňte všetky povinné polia.');
+                    return;
+                }
+
+                if (!gdpr) {
+                    alert('Prosím, súhlaste so spracovaním osobných údajov.');
+                    return;
+                }
+
+                // Here you would normally send the data to your server
+                console.log('Contact form data:', { name, phone, email, message });
+                
+                alert('Ďakujeme za správu! Ozveme sa vám do 24 hodín.');
+                contactForm.reset();
+            });
+        }
+
+        // Journey cards scroll interaction
+        const journeyWrapper = document.querySelector('.journey-cards-wrapper');
+        const progressDots = document.querySelectorAll('.progress-dot');
+        const journeyCards = document.querySelectorAll('.journey-card');
+
+        if (journeyWrapper && progressDots.length > 0) {
+            // Update active dot based on scroll position
+            journeyWrapper.addEventListener('scroll', () => {
+                const scrollLeft = journeyWrapper.scrollLeft;
+                const cardWidth = journeyCards[0].offsetWidth + 32; // card width + gap
+                const activeIndex = Math.round(scrollLeft / cardWidth);
+                
+                progressDots.forEach((dot, index) => {
+                    if (index === activeIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            });
+
+            // Click on dots to scroll to card
+            progressDots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    const cardWidth = journeyCards[0].offsetWidth + 32;
+                    journeyWrapper.scrollTo({
+                        left: cardWidth * index,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        }
     </script>
 
     <!-- Schema.org -->
@@ -1672,14 +2810,4 @@
         "description": "Rýchly výkup nehnuteľností na Slovensku do 3 dní",
         "url": "https://www.dobrypredaj.sk",
         "telephone": "+421123456789",
-        "email": "info@dobrypredaj.sk",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Hlavná 123",
-            "addressLocality": "Bratislava",
-            "addressCountry": "SK"
-        }
-    }
-    </script>
-</body>
-</html>
+        "email": "info@do

@@ -176,7 +176,8 @@
             border: none;
             cursor: pointer;
             padding: 8px;
-            z-index: 1001;
+            z-index: 1002;
+            position: relative;
         }
 
         .hamburger span {
@@ -199,6 +200,25 @@
             transform: rotate(-45deg) translate(8px, -8px);
         }
 
+        /* Mobile Menu Backdrop */
+        .menu-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-backdrop.active {
+            display: block;
+            opacity: 1;
+        }
+
         /* Mobile Menu */
         @media (max-width: 1024px) {
             .nav-menu {
@@ -210,20 +230,47 @@
                 background: white;
                 flex-direction: column;
                 padding: 100px 40px 40px;
-                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
                 transition: right 0.4s ease;
                 gap: 0;
+                z-index: 1001;
+                overflow-y: auto;
             }
 
             .nav-menu.active {
                 right: 0;
             }
 
+            /* OVERRIDE všetkých desktop štýlov */
             .nav-link {
-                padding: 16px 0;
+                padding: 20px 0 !important;
                 width: 100%;
-                font-size: 18px;
+                font-size: 18px !important;
                 border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                border-radius: 0 !important;
+                background: transparent !important;
+                color: var(--color-dark) !important;
+                position: relative;
+                transition: color 0.3s ease;
+            }
+
+            .nav-link:hover {
+                background: transparent !important;
+                color: #667eea !important;
+            }
+
+            .nav-link.active {
+                background: transparent !important;
+                color: var(--color-dark) !important;
+                font-weight: 600;
+            }
+
+            .nav-link.active::after {
+                display: none !important;
+            }
+
+            .nav-link::before {
+                display: none !important;
             }
 
             .nav-cta {
@@ -1767,6 +1814,9 @@
         </div>
     </nav>
 
+    <!-- Mobile Menu Backdrop -->
+    <div class="menu-backdrop" id="menuBackdrop" onclick="closeMobileMenu()"></div>
+
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
@@ -2446,11 +2496,35 @@
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Mobile Menu Toggle
+        // Mobile Menu Functions
         function toggleMobileMenu() {
             const navMenu = document.getElementById('navMenu');
             const hamburger = document.getElementById('hamburger');
+            const backdrop = document.getElementById('menuBackdrop');
+            const body = document.body;
+            
             navMenu.classList.toggle('active');
             hamburger.classList.toggle('active');
+            backdrop.classList.toggle('active');
+            
+            // Prevent body scroll when menu is open
+            if (navMenu.classList.contains('active')) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = '';
+            }
+        }
+
+        function closeMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const hamburger = document.getElementById('hamburger');
+            const backdrop = document.getElementById('menuBackdrop');
+            const body = document.body;
+            
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+            backdrop.classList.remove('active');
+            body.style.overflow = '';
         }
 
         // Smooth scroll with offset for fixed navbar
@@ -2459,10 +2533,7 @@
                 e.preventDefault();
                 
                 // Close mobile menu
-                const navMenu = document.getElementById('navMenu');
-                const hamburger = document.getElementById('hamburger');
-                navMenu.classList.remove('active');
-                hamburger.classList.remove('active');
+                closeMobileMenu();
                 
                 // Get target section
                 const targetId = this.getAttribute('href');
@@ -2522,6 +2593,20 @@
 
         // Initial check on page load
         updateActiveMenuItem();
+
+        // Close menu with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeMobileMenu();
+            }
+        });
+
+        // Close menu on window resize to desktop size
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 1024) {
+                closeMobileMenu();
+            }
+        });
 
         // Calculator Logic
         let currentStep = 1;

@@ -192,6 +192,10 @@
             padding: 0;
         }
 
+        .mobile-menu-cta {
+            display: none;
+        }
+
         .nav-link {
             text-decoration: none;
             color: var(--color-dark);
@@ -239,33 +243,55 @@
         .hamburger {
             display: none;
             flex-direction: column;
-            gap: 6px;
-            background: none;
+            justify-content: center;
+            gap: 5px;
+            background: rgba(102, 126, 234, 0.1);
             border: none;
             cursor: pointer;
-            padding: 8px;
+            padding: 10px;
             z-index: 1002;
             position: relative;
+            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .hamburger:hover {
+            background: rgba(102, 126, 234, 0.15);
+        }
+
+        .hamburger:active {
+            transform: scale(0.95);
         }
 
         .hamburger span {
-            width: 28px;
-            height: 3px;
-            background: var(--color-dark);
+            width: 24px;
+            height: 2.5px;
+            background: #667eea;
             border-radius: 3px;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block;
+        }
+
+        .hamburger.active {
+            background: rgba(102, 126, 234, 0.15);
         }
 
         .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
+            transform: rotate(45deg) translate(7px, 7px);
+            background: #667eea;
         }
 
         .hamburger.active span:nth-child(2) {
             opacity: 0;
+            transform: translateX(-10px);
         }
 
         .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(8px, -8px);
+            transform: rotate(-45deg) translate(7px, -7px);
+            background: #667eea;
         }
 
         /* Mobile Menu Backdrop */
@@ -276,10 +302,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(15, 15, 35, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 999;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .menu-backdrop.active {
@@ -292,45 +320,82 @@
             .nav-menu {
                 position: fixed;
                 top: 0;
-                right: -100%;
-                width: 300px;
+                left: 0;
+                width: 100%;
                 height: 100vh;
-                background: white;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 flex-direction: column;
-                padding: 100px 40px 40px;
-                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
-                transition: right 0.4s ease;
+                justify-content: center;
+                align-items: center;
+                padding: 80px 40px;
                 gap: 0;
                 z-index: 1001;
                 overflow-y: auto;
+                opacity: 0;
+                visibility: hidden;
+                transform: scale(0.95);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             }
 
             .nav-menu.active {
-                right: 0;
+                opacity: 1;
+                visibility: visible;
+                transform: scale(1);
             }
 
-            /* OVERRIDE všetkých desktop štýlov */
-            .nav-link {
-                padding: 20px 0 !important;
+            .nav-menu li {
                 width: 100%;
-                font-size: 18px !important;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-                border-radius: 0 !important;
-                background: transparent !important;
-                color: var(--color-dark) !important;
-                position: relative;
-                transition: color 0.3s ease;
+                max-width: 400px;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             }
 
-            .nav-link:hover {
-                background: transparent !important;
-                color: #667eea !important;
+            .nav-menu.active li {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* Staggered animation for menu items */
+            .nav-menu.active li:nth-child(1) { transition-delay: 0.1s; }
+            .nav-menu.active li:nth-child(2) { transition-delay: 0.15s; }
+            .nav-menu.active li:nth-child(3) { transition-delay: 0.2s; }
+            .nav-menu.active li:nth-child(4) { transition-delay: 0.25s; }
+            .nav-menu.active li:nth-child(5) { transition-delay: 0.3s; }
+            .nav-menu.active li:nth-child(6) { transition-delay: 0.35s; }
+            .nav-menu.active li:nth-child(7) { transition-delay: 0.4s; }
+
+            .nav-link {
+                padding: 20px 32px !important;
+                width: 100%;
+                font-size: 24px !important;
+                font-weight: 700 !important;
+                border-radius: 16px !important;
+                background: rgba(255, 255, 255, 0.1) !important;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                color: white !important;
+                text-align: center;
+                border: 2px solid rgba(255, 255, 255, 0.15) !important;
+                margin-bottom: 12px;
+                position: relative;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                -webkit-tap-highlight-color: transparent;
+                text-decoration: none;
+                display: block;
+            }
+
+            .nav-link:hover,
+            .nav-link:active {
+                background: rgba(255, 255, 255, 0.2) !important;
+                border-color: rgba(255, 255, 255, 0.3) !important;
+                transform: translateX(8px);
             }
 
             .nav-link.active {
-                background: transparent !important;
-                color: var(--color-dark) !important;
-                font-weight: 600;
+                background: rgba(255, 255, 255, 0.25) !important;
+                border-color: rgba(255, 255, 255, 0.4) !important;
+                font-weight: 800 !important;
             }
 
             .nav-link.active::after {
@@ -339,6 +404,40 @@
 
             .nav-link::before {
                 display: none !important;
+            }
+
+            /* Mobile menu CTA */
+            .mobile-menu-cta {
+                display: block;
+                width: 100%;
+                max-width: 400px;
+                margin-top: 32px;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .nav-menu.active .mobile-menu-cta {
+                opacity: 1;
+                transform: translateY(0);
+                transition-delay: 0.45s;
+            }
+
+            .mobile-menu-cta .btn {
+                width: 100%;
+                background: white !important;
+                color: #667eea !important;
+                font-size: 18px !important;
+                padding: 20px 32px !important;
+                border-radius: 16px !important;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
+                font-weight: 700 !important;
+            }
+
+            .mobile-menu-cta .btn:hover,
+            .mobile-menu-cta .btn:active {
+                transform: translateY(-4px);
+                box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3) !important;
             }
 
             .nav-cta {
@@ -357,6 +456,30 @@
 
             .logo {
                 font-size: 20px;
+            }
+
+            /* Responsive mobile menu for smaller screens */
+            .nav-menu {
+                padding: 60px 24px;
+            }
+
+            .nav-menu li {
+                max-width: 100%;
+            }
+
+            .nav-link {
+                font-size: 20px !important;
+                padding: 16px 24px !important;
+            }
+
+            .mobile-menu-cta {
+                max-width: 100%;
+                margin-top: 24px;
+            }
+
+            .mobile-menu-cta .btn {
+                font-size: 16px !important;
+                padding: 18px 24px !important;
             }
         }
         
@@ -404,6 +527,10 @@
             font-family: var(--font-family);
             position: relative;
             overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
         
         .btn::before {
@@ -433,6 +560,28 @@
         .btn-primary:hover {
             transform: translateY(-4px);
             box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5);
+        }
+        
+        /* Oprava tlačidiel pre mobilné zariadenia */
+        @media (hover: none) and (pointer: coarse) {
+            .btn:hover::before {
+                width: 0;
+                height: 0;
+            }
+            
+            .btn-primary:hover {
+                transform: none;
+                box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+            }
+            
+            .btn:active {
+                transform: scale(0.98);
+                transition: transform 0.1s ease;
+            }
+            
+            .btn-primary:active {
+                box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+            }
         }
         
         .btn-large {
@@ -1790,6 +1939,7 @@
             z-index: 1000;
             transform: translateY(120%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
         }
         
         .sticky-cta.visible {
@@ -1798,6 +1948,23 @@
         
         .sticky-cta .btn {
             width: 100%;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        /* Oprava hover efektu na mobile pre sticky CTA */
+        @media (hover: none) and (pointer: coarse) {
+            .sticky-cta .btn:hover {
+                transform: none;
+                box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+            }
+            
+            .sticky-cta .btn:active {
+                transform: scale(0.98);
+                transition: transform 0.1s ease;
+            }
         }
         
         @media (min-width: 769px) {
@@ -1859,12 +2026,17 @@
                 </a>
                 
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="#home" class="nav-link">Domov</a></li>
-                    <li><a href="#o-nas" class="nav-link">O nás</a></li>
-                    <li><a href="#vyhody" class="nav-link">Výhody</a></li>
-                    <li><a href="#proces" class="nav-link">Proces</a></li>
-                    <li><a href="#faq" class="nav-link">FAQ</a></li>
-                    <li><a href="#kontakt" class="nav-link">Kontakt</a></li>
+                    <li><a href="#home" class="nav-link" onclick="closeMobileMenu()">Domov</a></li>
+                    <li><a href="#o-nas" class="nav-link" onclick="closeMobileMenu()">O nás</a></li>
+                    <li><a href="#vyhody" class="nav-link" onclick="closeMobileMenu()">Výhody</a></li>
+                    <li><a href="#proces" class="nav-link" onclick="closeMobileMenu()">Proces</a></li>
+                    <li><a href="#faq" class="nav-link" onclick="closeMobileMenu()">FAQ</a></li>
+                    <li><a href="#kontakt" class="nav-link" onclick="closeMobileMenu()">Kontakt</a></li>
+                    <li class="mobile-menu-cta">
+                        <a href="#kalkulator" class="btn btn-primary" onclick="closeMobileMenu()">
+                            Oceniť nehnuteľnosť →
+                        </a>
+                    </li>
                 </ul>
 
                 <div class="nav-cta">
@@ -2404,11 +2576,11 @@
                             </div>
                         </a>
 
-                        <a href="mailto:info@dobrypredaj.sk" class="contact-info-item">
+                        <a href="/cdn-cgi/l/email-protection#81e8efe7eec1e5eee3f3f8f1f3e4e5e0ebaff2ea" class="contact-info-item">
                             <div class="info-icon">📧</div>
                             <div class="info-text">
                                 <span class="info-label">Napíšte email</span>
-                                <span class="info-value">info@dobrypredaj.sk</span>
+                                <span class="info-value"><span class="__cf_email__" data-cfemail="21484f474e61454e43535851534445404b0f524a">[email&#160;protected]</span></span>
                             </div>
                         </a>
 
@@ -2562,7 +2734,7 @@
         </button>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Mobile Menu Toggle
         // Mobile Menu Functions
         function toggleMobileMenu() {
@@ -2716,15 +2888,23 @@
         };
 
         function scrollToCalculator() {
+            // Odstráň focus z tlačidla (oprava sticky hover efektu na mobile)
+            if (document.activeElement) {
+                document.activeElement.blur();
+            }
+            
             const calculator = document.getElementById('kalkulator');
             if (calculator) {
                 const navbarHeight = document.getElementById('navbar').offsetHeight;
                 const targetPosition = calculator.offsetTop - navbarHeight - 20;
                 
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
+                // Malé oneskorenie pre lepšiu responzivitu na mobile
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }, 50);
             }
         }
 
@@ -2976,9 +3156,4 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "RealEstateAgent",
-        "name": "Dobrý Predaj s.r.o.",
-        "description": "Rýchly výkup nehnuteľností na Slovensku do 3 dní",
-        "url": "https://www.dobrypredaj.sk",
-        "telephone": "+421123456789",
-        "email": "info@do
+        "@type": "Rea
